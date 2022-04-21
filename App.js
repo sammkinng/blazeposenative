@@ -22,7 +22,7 @@ import Canvas from 'react-native-canvas';
 import { model, detectorConfig } from './constants/model';
 
 const Tensorcamera = cameraWithTensors(Camera)
-const tensorDims = { height: 224, width: 224, depth: 3 };
+const tensorDims = { height: height, width: width, depth: 3 };
 
 const App = () => {
   const plot = () => {
@@ -43,7 +43,7 @@ const App = () => {
   const createDetector = async () => {
     return posedetection.createDetector(model, detectorConfig);
   };
-  const onReady = React.useCallback((images) => {
+  const onReady = (images) => {
     if (!images) {
       console.log("Image not found!");
     }
@@ -52,6 +52,7 @@ const App = () => {
       canvas.current,
     );
     const loop = async () => {
+      console.log('loop1')
       try {
         const nextImageTensor = images.next().value;
         camera.clearCtx()
@@ -62,8 +63,14 @@ const App = () => {
               nextImageTensor,
               { maxPoses: 1, flipHorizontal: false });
             if (poses && poses.length > 0) {
-              camera.drawResults(poses[0])
+              let nose = poses[0].keypoints[0]
+              camera.drawText(nose.x, nose.y)
+              // console.log(poses[0].keypoints[0])
+              // camera.drawResults(poses)
               // camera.do_exercise(exercise)
+            }
+            else {
+              console.log('no pose')
             }
             // console.log(poses[0])
           } catch (error) {
@@ -77,11 +84,10 @@ const App = () => {
       } catch (error) {
         console.log(error)
       }
-      // console.log('loop')
 
     };
     loop();
-  }, [])
+  }
   useEffect(() => {
     plot()
     if (!frameWorkReady) {
@@ -102,7 +108,7 @@ const App = () => {
       cancelAnimationFrame(raf.current);
     };
   }, [raf.current]);
-  return React.useMemo(() => (
+  return (
     <View style={styles.container}>
       <Modal
         transparent={true}
@@ -117,23 +123,21 @@ const App = () => {
           onReady={onReady}
           autorender={true}
           style={styles.stream}
-          cameraTextureHeight={textureDimsState.height}
-          cameraTextureWidth={textureDimsState.width}
-          resizeHeight={tensorDims.height}
-          resizeWidth={tensorDims.width}
-          resizeDepth={tensorDims.depth}
+          cameraTextureHeight={height}
+          cameraTextureWidth={width}
+          resizeHeight={height - height % 4}
+          resizeWidth={width - width % 4}
+          resizeDepth={3}
         /> : <Text>camera not available
         </Text>}
     </View>
-  ), [onReady, hasPermission])
+  )
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    // alignItems: 'center',
-    // justifyContent: 'center',
   },
   stream: {
     width: width,

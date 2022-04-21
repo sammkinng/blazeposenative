@@ -1,6 +1,8 @@
 import * as mpPose from '@mediapipe/pose';
 import * as posedetection from '@tensorflow-models/pose-detection';
 
+console.log(mpPose)
+
 const body = {
     'nose': 0,
     'left_eye_inner': 1,
@@ -37,17 +39,17 @@ const body = {
     'right_foot_index': 32
 }
 
-// const detectorConfig = {
-//     runtime: 'mediapipe',
-//     modelType: 'full',
-//     solutionPath: `https://cdn.jsdelivr.net/npm/@mediapipe/pose@${mpPose.VERSION}`
-
-// };
-
 const detectorConfig = {
-    runtime: 'tfjs',
-    modelType: 'full'
+    runtime: 'mediapipe',
+    modelType: 'full',
+    solutionPath: `https://cdn.jsdelivr.net/npm/@mediapipe/pose@${mpPose.VERSION}`
+
 };
+
+// const detectorConfig = {
+//     runtime: 'tfjs',
+//     modelType: 'full'
+// };
 
 const videoConfig = {
     'audio': false,

@@ -25,7 +25,7 @@ import HKEnd from '../Assets/Sound/high_knees/HIGH KNEES_end.mp3'
 export class PoseCamera {
     constructor(canvas) {
         // this.video = camera1
-        // this.canvas = canvas
+        this.canvas = canvas
         this.ctx = canvas.getContext('2d');
         // this.width = this.video.offsetWidth
         // this.height = this.video.offsetHeight
@@ -105,7 +105,7 @@ export class PoseCamera {
     }
 
     clearCtx() {
-        this.ctx.clearRect(0, 0, width, height);
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
     /**
@@ -202,10 +202,10 @@ export class PoseCamera {
     // draw text of values provided
     drawText(a, b = 0, c = 0, d = 0) {
         this.ctx.font = "30px Arial";
-        this.ctx.fillText(a, 300, 30);
-        this.ctx.fillText(b, 300, 60);
-        this.ctx.fillText(c, 300, 100);
-        this.ctx.fillText(d, 300, 150);
+        this.ctx.fillText(a, 100, 30);
+        this.ctx.fillText(b, 100, 60);
+        this.ctx.fillText(c, 100, 100);
+        this.ctx.fillText(d, 100, 150);
     }
     // find angle bw 3 keypoints
     getAngle(a, b, c) {

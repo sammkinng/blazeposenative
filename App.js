@@ -20,7 +20,7 @@ import * as posedetection from '@tensorflow-models/pose-detection';
 import { cameraWithTensors } from '@tensorflow/tfjs-react-native';
 import Canvas from 'react-native-canvas';
 import { model, detectorConfig } from './constants/model';
-
+import {useStateIfMounted} from 'use-state-if-mounted'
 const Tensorcamera = cameraWithTensors(Camera)
 const tensorDims = { height: height, width: width, depth: 3 };
 
@@ -36,10 +36,10 @@ const App = () => {
   const detector = useRef(null)
   const raf = useRef(null)
   const [hasPermission, setHasPermission] = useState(null);
-  const [frameWorkReady, setFrameWorkReady] = useState(false)
+  const [frameWorkReady, setFrameWorkReady] = useStateIfMounted(false)
   const textureDimsState = Platform.OS === 'ios' ? { height: 1920, width: 1080 } : { height: 1200, width: 1600 }
   const camera1 = useRef(null)
-  const [tfReady, setTFReady] = useState(false);
+  const [tfReady, setTFReady] = useStateIfMounted(false);
   const createDetector = async () => {
     return posedetection.createDetector(model, detectorConfig);
   };
@@ -52,7 +52,7 @@ const App = () => {
       canvas.current,
     );
     const loop = async () => {
-      console.log('loop1')
+      // console.log('loop1')
       try {
         const nextImageTensor = images.next().value;
         camera.clearCtx()
